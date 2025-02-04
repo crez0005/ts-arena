@@ -62,6 +62,7 @@ export default abstract class Mover extends GameItem {
     const collisionNormal: Vector2 = thisCenter.subtract(itemCenter);
     const distance: number = collisionNormal.getMagnitude();
 
+    
     // Calculate the minimum distance needed between centers to prevent overlap
     const minDistance: number = (this.getWidth() + item.getWidth()) / 2;
 
