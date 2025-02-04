@@ -220,7 +220,7 @@ export default class CanvasRenderer {
     endX: number,
     endY: number,
     color: string = 'white',
-    width: number = 3
+    width: number = 4
   ): void {
     const ctx: CanvasRenderingContext2D = CanvasRenderer.getCanvasContext(canvas);
     ctx.beginPath();

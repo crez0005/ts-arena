@@ -18,6 +18,8 @@ export default class Hero extends Mover {
   private movingRight: boolean;
 
   // shooting
+  private damage: number;
+
   private shotInterval: number;
 
   private timeToNextShot: number;
@@ -38,6 +40,7 @@ export default class Hero extends Mover {
     this.movingLeft = false;
     this.movingRight = false;
     // shooting
+    this.damage = 1;
     this.shotInterval = 150; // ms
     this.timeToNextShot = 0;
     this.hitDepth = 1;
@@ -74,7 +77,7 @@ export default class Hero extends Mover {
     //targets.splice(i, 1);
     target.isHit = true;
     target.addImpulse(direction.multiply(10));
-    target.takeDamage(1);
+    target.takeDamage(this.damage);
   }
 
   /**
@@ -187,7 +190,7 @@ export default class Hero extends Mover {
     super.render(canvas);
     // draw the rays per shots fired as lines
     this.raysFired.forEach((ray: Ray) => {
-      CanvasRenderer.drawLine(canvas, ray.origin.x, ray.origin.y, ray.direction.x, ray.direction.y);
+      CanvasRenderer.drawLine(canvas, ray.origin.x, ray.origin.y, ray.direction.x, ray.direction.y, 'red');
     });
   }
 }
