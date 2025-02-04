@@ -183,10 +183,14 @@ export default class Arena extends Game {
   public render(): void {
     // Start clean slate each frame
     CanvasRenderer.clearCanvas(this.canvas);
+
     this.hero.render(this.canvas);
     this.enemies.forEach((enemy: Enemy) => {
       enemy.render(this.canvas);
     });
+
+    // crosshair
+    this.canvas.style.cursor = 'url("./assets/aim_cross.png") 18 18, auto';
 
     let gameOverText: string = 'GAME OVER';
     let gameOverColor: string = 'red';
