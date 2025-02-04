@@ -14,7 +14,7 @@ export default class Weapon {
 
   private raysFired: Ray[];
 
-  public constructor(damage: number = 1, shotInterval: number = 150, hitDepth: number = 1) {
+  public constructor(shotInterval: number = 150, damage: number = 1, hitDepth: number = 1) {
     this.damage = damage;
     this.shotInterval = shotInterval;
     this.timeToNextShot = 0;

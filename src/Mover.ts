@@ -1,5 +1,6 @@
 import CanvasRenderer from './CanvasRenderer.js';
 import GameItem from './GameItem.js';
+import Settings from './Settings.js';
 import Vector2 from './Vector2.js';
 
 export default abstract class Mover extends GameItem {
@@ -11,12 +12,15 @@ export default abstract class Mover extends GameItem {
 
   protected velocity: Vector2;
 
+  protected settings: Settings;
+
   public constructor(boundary: Vector2) {
     super();
     this.boundary = boundary;
     this.health = 1;
     this.speed = 0.3; // px per ms
     this.velocity = new Vector2(0, 0);
+    this.settings = new Settings();
   }
 
   public getHealth(): number {

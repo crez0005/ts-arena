@@ -10,6 +10,7 @@ import Vector2 from './Vector2.js';
 import Enemy from './Enemy.js';
 import Chaser from './Chaser.js';
 import MouseListener from './MouseListener.js';
+import Settings from './Settings.js';
 
 export default class Arena extends Game {
   private canvas: HTMLCanvasElement;
@@ -19,6 +20,8 @@ export default class Arena extends Game {
   private keyListener: KeyListener;
 
   private mouseListener: MouseListener;
+
+  public settings: Settings;
 
   private hero: Hero;
 
@@ -35,6 +38,8 @@ export default class Arena extends Game {
   private timeToNextEnemy: number;
 
   private maxEnemies: number;
+  // Track spawn timers for each enemy type
+  private enemySpawnTimers: Map<Enemy, number>;
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
@@ -43,6 +48,8 @@ export default class Arena extends Game {
     this.canvas.width = window.innerWidth;
     this.canvasBoundary = new Vector2(window.innerWidth, window.innerHeight);
 
+    this.settings = new Settings();
+
     this.keyListener = new KeyListener;
     this.mouseListener = new MouseListener(canvas);
     this.hero = new Hero(this.canvasBoundary);
@@ -50,8 +57,9 @@ export default class Arena extends Game {
     this.highScore = 0;
     this.isNewHighScore = false;
 
-    this.enemySpawnInterval = 300;
+    this.enemySpawnInterval = 250 * 3 / this.settings.difficulty * 5;
     this.timeToNextEnemy = this.enemySpawnInterval;
+    this.enemySpawnTimers = new Map();
     this.maxEnemies = 32;
     this.enemies = [];
     this.initializeEnemies();
@@ -62,7 +70,7 @@ export default class Arena extends Game {
    */
   public initializeEnemies(): void {
     this.enemies = [];
-    for (let i: number = 0; i < 7; i++) {
+    for (let i: number = 0; i < 2; i++) {
       this.spawnEnemy();
     }
   }
@@ -73,10 +81,14 @@ export default class Arena extends Game {
   public spawnEnemy(): void {
     if (this.enemies.length < this.maxEnemies) {
       const newChaser: Enemy = new Chaser(this.canvasBoundary);
-      // only generate positions away from the player
-      newChaser.setStartPos(this.hero.getPos());//(this.canvasBoundary.getMagnitude()/2));
+      newChaser.setStartPos(this.hero.getPos());
       this.enemies.push(newChaser);
-      //console.log(this.enemies.length);
+      
+      // Initialize spawn timer for the new enemy
+      this.enemySpawnTimers.set(
+        newChaser,
+        newChaser.getSpawnInterval(this.enemySpawnInterval)
+      );
     }
   }
 

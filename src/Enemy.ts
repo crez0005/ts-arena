@@ -17,6 +17,19 @@ export default abstract class Enemy extends Mover {
     this.setStartPos();
   }
 
+  /** Calculate spawn interval based on enemy's properties */
+  public getSpawnInterval(baseSpawnInterval: number = 750, difficulty: number = 1): number {
+    const hitsRequired: number = this.calcHitsRequired();
+    // Adjust interval based on hits required and difficulty
+    return baseSpawnInterval * hitsRequired * hitsRequired / difficulty;
+  }
+
+  /** Calculate hits required based on enemy's health */
+  protected calcHitsRequired(damageOptions: number[] = [1]): number {
+    // For now, simply use health as hits required (in future use primeness)
+    return this.health;
+  }
+
   private generateRandomPointOnBorder(): Vector2 {
     // Choose a random side to spawn the object on
     const side: number = Math.floor(Math.random() * 4);
@@ -85,5 +98,15 @@ export default abstract class Enemy extends Mover {
       // teleport when shot out of bounds
       //this.setStartPos();
     }
+  }
+
+  public override render(canvas: HTMLCanvasElement): void {
+    super.render(canvas);
+    const p: Vector2 = this.getPosCentered();
+    // display health
+    CanvasRenderer.writeText(canvas,
+      `${this.health}`,
+      p.x, p.y + this.image.height - 5, 'center', 'monospace', 60, 'white'
+    );
   }
 }

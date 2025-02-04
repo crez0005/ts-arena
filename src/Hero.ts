@@ -28,7 +28,7 @@ export default class Hero extends Mover {
     this.movingLeft = false;
     this.movingRight = false;
     
-    this.weapon = new Weapon();
+    this.weapon = new Weapon(450 / this.settings.difficulty);
     
     this.center();
   }
