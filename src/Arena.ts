@@ -38,8 +38,6 @@ export default class Arena extends Game {
   private timeToNextEnemy: number;
 
   private maxEnemies: number;
-  // Track spawn timers for each enemy type
-  private enemySpawnTimers: Map<Enemy, number>;
 
   public constructor(canvas: HTMLCanvasElement) {
     super();
@@ -57,9 +55,8 @@ export default class Arena extends Game {
     this.highScore = 0;
     this.isNewHighScore = false;
 
-    this.enemySpawnInterval = 250 * 3 / this.settings.difficulty * 5;
+    this.enemySpawnInterval = 900 / this.settings.difficulty;
     this.timeToNextEnemy = this.enemySpawnInterval;
-    this.enemySpawnTimers = new Map();
     this.maxEnemies = 32;
     this.enemies = [];
     this.initializeEnemies();
@@ -81,14 +78,10 @@ export default class Arena extends Game {
   public spawnEnemy(): void {
     if (this.enemies.length < this.maxEnemies) {
       const newChaser: Enemy = new Chaser(this.canvasBoundary);
-      newChaser.setStartPos(this.hero.getPos());
+      // only generate positions away from the player
+      newChaser.setStartPos(this.hero.getPos());//(this.canvasBoundary.getMagnitude()/2));
       this.enemies.push(newChaser);
-      
-      // Initialize spawn timer for the new enemy
-      this.enemySpawnTimers.set(
-        newChaser,
-        newChaser.getSpawnInterval(this.enemySpawnInterval)
-      );
+      //console.log(this.enemies.length);
     }
   }
 

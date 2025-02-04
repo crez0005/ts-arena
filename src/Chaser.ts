@@ -10,11 +10,10 @@ export default class Chaser extends Enemy {
   public constructor(boundary: Vector2) {
     super(boundary);
     this.image = CanvasRenderer.loadNewImage('./assets/sprite_enem_faceless.png');
-    this.speed = 0.1 * this.settings.difficulty; // px per ms
-    this.health = 5;
-    this.score = 1;
-
-    this.speed /= this.calcHitsRequired();
+    this.health = 1;
+    this.randomHealth();
+    this.score = this.calcMinimumHitsRequired();
+    this.speed = 0.1 * this.settings.difficulty / this.score; // px per ms
 
     this.target = null;
   }

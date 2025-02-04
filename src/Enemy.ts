@@ -17,17 +17,27 @@ export default abstract class Enemy extends Mover {
     this.setStartPos();
   }
 
-  /** Calculate spawn interval based on enemy's properties */
-  public getSpawnInterval(baseSpawnInterval: number = 750, difficulty: number = 1): number {
-    const hitsRequired: number = this.calcHitsRequired();
-    // Adjust interval based on hits required and difficulty
-    return baseSpawnInterval * hitsRequired * hitsRequired / difficulty;
+  /** set health to random tafelsom from 1x1 to 10x10 */
+  protected randomHealth(): number {
+    const randomTafel: number = Math.ceil(Math.random()*10) * Math.ceil(Math.random()*10);
+    this.health = randomTafel;
+    return randomTafel;
   }
 
-  /** Calculate hits required based on enemy's health */
-  protected calcHitsRequired(damageOptions: number[] = [1]): number {
-    // For now, simply use health as hits required (in future use primeness)
-    return this.health;
+  /** Find the largest divisor from 1-9 */
+  public calcMinimumHitsRequired(): number {
+    const damageOptions: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    let largestDivisor: number = 1;
+
+    // Check each number from 9 down to 1
+    for (let i: number = damageOptions.length - 1; i >= 0; i--) {
+      if (this.health % damageOptions[i] === 0) {
+        largestDivisor = damageOptions[i];
+        break;
+      }
+    }
+
+    return this.health / largestDivisor;
   }
 
   private generateRandomPointOnBorder(): Vector2 {

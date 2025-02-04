@@ -1,6 +1,6 @@
 export default class Settings {
-  // TD: divide into mechanical diffi and intellectual diffi
-  public difficulty: number = 3;
+  // TD: divide into mechanical difficulty and intellectual difficulty
+  public difficulty: number = 1;
 
   public update(dt: number): void {
     // problem: each class has its own instance, so can't update difficulty globally
