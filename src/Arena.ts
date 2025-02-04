@@ -157,8 +157,10 @@ export default class Arena extends Game {
     // Loop through all the enemies and...
     this.enemies.forEach((enemy: Enemy, i: number) => {
       if (enemy.getHealth() <= 0) {
+        // remove enemy if health reached 0
         this.enemies.splice(i, 1);
       }
+      
       // update each enemy
       enemy.update(dt);
       // no condition, the enemy is all knowing for now
