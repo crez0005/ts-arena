@@ -3,7 +3,7 @@ name: Build game and publish to GitHub Pages
 on:
   # Runs on pushes targeting the default branch
   push:
-    branches: ["main"]
+    branches: ["master"]
 
   workflow_dispatch:
 
