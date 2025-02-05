@@ -11,7 +11,7 @@ export default class Chaser extends Enemy {
     super(boundary);
     this.image = CanvasRenderer.loadNewImage('./assets/sprite_enem_miniface.png');
     this.health = 1;
-    this.randomHealth();
+    this.maxHealth = this.randomHealth();
     this.score = this.calcMinimumHitsRequired();
     this.speed = 0.1 * this.settings.difficulty / this.score; // px per ms
     this.scale.multiplyBy(Math.sqrt(this.score / 3));

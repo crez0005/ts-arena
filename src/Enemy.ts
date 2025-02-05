@@ -4,6 +4,9 @@ import Vector2 from './Vector2.js';
 
 export default abstract class Enemy extends Mover {
   public isHit: boolean;
+
+  protected maxHealth: number;
+
   protected score: number;
 
   public constructor(boundary: Vector2) {
@@ -12,6 +15,7 @@ export default abstract class Enemy extends Mover {
     this.image = CanvasRenderer.loadNewImage('');
     this.scale = new Vector2(3, 3);
     this.isHit = false;
+    this.maxHealth = 1;
     this.health = 1;
     this.score = 1;
     this.setStartPos();
@@ -24,9 +28,9 @@ export default abstract class Enemy extends Mover {
     return randomTafel;
   }
 
-  /** Find the largest divisor from 1-9 */
+  /** Find the largest divisor from 1-10 */
   public calcMinimumHitsRequired(): number {
-    const damageOptions: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    const damageOptions: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     let largestDivisor: number = 1;
 
     // Check each number from 9 down to 1
@@ -93,12 +97,19 @@ export default abstract class Enemy extends Mover {
   }
 
   public addImpulse(velocity: Vector2): void {
-    this.pos.addTo(velocity);
+    this.pos.addTo(velocity.divide(Math.sqrt(this.score/3)));
   }
 
   public abstract onSense(target: Mover): void;
 
   public abstract onHeroCollision(item: Mover): void;
+
+  /** only take damage if this.maxHealth is divisible by damage */
+  public override takeDamage(damage: number): void {
+    if (this.health % damage === 0) {
+      this.health -= damage;
+    }
+  }
 
   public update(dt: number): void {
     if (this.isOutOfBounds() && this.isHit) {

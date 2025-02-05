@@ -76,6 +76,9 @@ export default class Weapon extends GameItem {
         this.damage = i;
       };
     }
+    if (this.keyListener.keyPressed('Digit0')) {
+      this.damage = 10;
+    };
   }
 
   public shoot(origin: Vector2, target: Vector2, targets: Enemy[]): number {

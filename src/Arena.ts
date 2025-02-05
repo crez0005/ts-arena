@@ -137,14 +137,10 @@ export default class Arena extends Game {
     // pass mousePosition for rotating gun
     this.hero.setMousePosition(this.mousePos);
 
-    //this.keyListener.k
-
-    // always shoot
-    const enemyScore: number = this.hero.shoot(this.mousePos, this.enemies);
-    this.score += enemyScore;
-    //if (this.mouseListener.isButtonDown(MouseListener.BUTTON_LEFT)) {
-    //  this.hero.shoot(this.mousePos, this.enemies);
-    //}
+    if (this.mouseListener.isButtonDown(MouseListener.BUTTON_LEFT)) {
+      const enemyScore: number = this.hero.shoot(this.mousePos, this.enemies);
+      this.score += enemyScore;
+    }
 
     this.handleHeroMovement();
   }
