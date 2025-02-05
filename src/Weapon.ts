@@ -2,6 +2,7 @@ import Projectile, { Ray } from './Projectile.js';
 import Enemy from './Enemy.js';
 import Vector2 from './Vector2.js';
 import CanvasRenderer from './CanvasRenderer.js';
+import KeyListener from './KeyListener.js';
 import GameItem from './GameItem.js';
 import Hero from './Hero.js';
 
@@ -25,6 +26,8 @@ export default class Weapon extends GameItem {
   private weaponLength: number;
 
   private visualRays: Ray[]; // For visual rays from weapon tip
+  
+  private keyListener: KeyListener;
 
   public constructor(hero: Hero, shotInterval: number = 150, damage: number = 1, hitDepth: number = 1) {
     super();
@@ -40,10 +43,15 @@ export default class Weapon extends GameItem {
     this.rotation = 0;
     this.armLength = 40;
     this.weaponLength = 40;
+    this.keyListener = new KeyListener();
   }
 
   public getDamage(): number {
     return this.damage;
+  }
+
+  public setDamage(damage: number): void {
+    this.damage = damage;
   }
 
   private getWeaponTipPosition(): Vector2 {
@@ -59,6 +67,15 @@ export default class Weapon extends GameItem {
     const baseX: number = heroCenter.x + this.armLength * Math.cos(this.rotation);
     const baseY: number = heroCenter.y + this.armLength * Math.sin(this.rotation);
     return new Vector2(baseX, baseY);
+  }
+
+  /** set damage to the digit key pressed */
+  public processInput(): void {
+    for (let i: number = 1; i <= 9; i++) {
+      if (this.keyListener.keyPressed(`Digit${i}`)) {
+        this.damage = i;
+      };
+    }
   }
 
   public shoot(origin: Vector2, target: Vector2, targets: Enemy[]): number {
@@ -126,6 +143,7 @@ export default class Weapon extends GameItem {
     return combinedScore;
   }
 
+  
   public update(dt: number): void {
     // Update rotation based on mouse position
     const mousePos: Vector2 = this.hero.getMousePosition();

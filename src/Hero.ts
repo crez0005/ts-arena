@@ -33,7 +33,11 @@ export default class Hero extends Mover {
     this.center();
 
     this.mousePos = new Vector2(0, 0);
-    this.weapon = new Weapon(this, 450 / this.settings.difficulty);
+    this.weapon = new Weapon(this, 400 / this.settings.difficulty);
+  }
+
+  public changeWeaponDamage(damage: number): void {
+    this.weapon.setDamage(damage);
   }
 
   private center(): void {
@@ -100,6 +104,10 @@ export default class Hero extends Mover {
 
     this.pos.addTo(this.velocity);
     this.boundaryCollision();
+  }
+
+  public processInput(): void {
+    this.weapon.processInput();
   }
 
   public override render(canvas: HTMLCanvasElement): void {

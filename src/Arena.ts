@@ -5,11 +5,11 @@
 import Game from './Game.js';
 import CanvasRenderer from './CanvasRenderer.js';
 import KeyListener from './KeyListener.js';
+import MouseListener from './MouseListener.js';
 import Hero from './Hero.js';
 import Vector2 from './Vector2.js';
 import Enemy from './Enemy.js';
 import Chaser from './Chaser.js';
-import MouseListener from './MouseListener.js';
 import Settings from './Settings.js';
 
 export default class Arena extends Game {
@@ -58,7 +58,7 @@ export default class Arena extends Game {
     this.highScore = 0;
     this.isNewHighScore = false;
 
-    this.enemySpawnInterval = 900 / this.settings.difficulty;
+    this.enemySpawnInterval = 4 * 900 / this.settings.difficulty;
     this.timeToNextEnemy = this.enemySpawnInterval;
     this.maxEnemies = 32;
     this.enemies = [];
@@ -122,10 +122,6 @@ export default class Arena extends Game {
     }
   }
 
-  private getMousePosition(): Vector2 {
-    return this.mousePos;
-  }
-
   /**
    * Process all input. Called from the GameLoop.
    */
@@ -136,9 +132,13 @@ export default class Arena extends Game {
       }
     }
 
+    this.hero.processInput();
     this.mousePos = this.mouseListener.getMousePosition();
     // pass mousePosition for rotating gun
     this.hero.setMousePosition(this.mousePos);
+
+    //this.keyListener.k
+
     // always shoot
     const enemyScore: number = this.hero.shoot(this.mousePos, this.enemies);
     this.score += enemyScore;
