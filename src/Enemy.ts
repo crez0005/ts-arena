@@ -1,5 +1,6 @@
 import CanvasRenderer from './CanvasRenderer.js';
 import Mover from './Mover.js';
+import Settings from './Settings.js';
 import Vector2 from './Vector2.js';
 
 export default abstract class Enemy extends Mover {
@@ -96,6 +97,10 @@ export default abstract class Enemy extends Mover {
     return this.score;
   }
 
+  /**
+   * Function that knocks the enemy back
+   * @param velocity 
+   */
   public addImpulse(velocity: Vector2): void {
     this.pos.addTo(velocity.divide(Math.sqrt(this.score/3)));
   }
@@ -104,18 +109,22 @@ export default abstract class Enemy extends Mover {
 
   public abstract onHeroCollision(item: Mover): void;
 
-  /** only take damage if this.maxHealth is divisible by damage */
+  /** only take damage if this.health is divisible by damage */
   public override takeDamage(damage: number): void {
     if (this.health % damage === 0) {
       this.health -= damage;
     }
   }
 
+  /**
+   * 
+   * @param dt 
+   */
   public update(dt: number): void {
     if (this.isOutOfBounds() && this.isHit) {
       this.isHit = false;
-      console.log('scheduled for detention');
-      this.health = 0;
+      // console.log('scheduled for detention');
+      //this.health = 0;
       // teleport when shot out of bounds
       //this.setStartPos();
     }

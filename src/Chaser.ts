@@ -2,6 +2,7 @@ import CanvasRenderer from './CanvasRenderer.js';
 import Enemy from './Enemy.js';
 import Hero from './Hero.js';
 import Mover from './Mover.js';
+import Settings from './Settings.js';
 import Vector2 from './Vector2.js';
 
 export default class Chaser extends Enemy {
@@ -13,7 +14,7 @@ export default class Chaser extends Enemy {
     this.health = 1;
     this.maxHealth = this.randomHealth();
     this.score = this.calcMinimumHitsRequired();
-    this.speed = 0.1 * this.settings.difficulty / this.score; // px per ms
+    this.speed = 0.1 / this.score; // px per ms
     this.scale.multiplyBy(Math.sqrt(this.score / 3));
 
     const baseWidth: number = this.image.width; // correct for image size differences

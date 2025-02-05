@@ -58,7 +58,7 @@ export default class Arena extends Game {
     this.highScore = 0;
     this.isNewHighScore = false;
 
-    this.enemySpawnInterval = 4 * 900 / this.settings.difficulty;
+    this.enemySpawnInterval = 4 * 900;
     this.timeToNextEnemy = this.enemySpawnInterval;
     this.maxEnemies = 32;
     this.enemies = [];
@@ -126,7 +126,22 @@ export default class Arena extends Game {
    * Process all input. Called from the GameLoop.
    */
   public processInput(): void {
-    if (this.mouseListener.buttonPressed(MouseListener.BUTTON_LEFT)) {
+    let actionRequest: boolean = this.mouseListener.isButtonDown(MouseListener.BUTTON_LEFT)
+    || this.keyListener.isKeyDown(KeyListener.KEY_SPACE)
+    || this.keyListener.isKeyDown(KeyListener.KEY_ENTER);
+    // the damage changing digits are shoot keys too
+    for (let i: number = 0; i <= 9; i++) {
+      actionRequest = actionRequest || this.keyListener.isKeyDown(`Digit${i}`);
+    }
+
+    let continueRequest: boolean = this.mouseListener.buttonPressed(MouseListener.BUTTON_LEFT)
+    || this.keyListener.keyPressed(KeyListener.KEY_SPACE)
+    || this.keyListener.keyPressed(KeyListener.KEY_ENTER);
+    for (let i: number = 0; i <= 9; i++) {
+      continueRequest = continueRequest || this.keyListener.keyPressed(`Digit${i}`);
+    }
+
+    if (continueRequest) {
       if (this.isGameOver()) {
         this.restartGame();
       }
@@ -137,7 +152,7 @@ export default class Arena extends Game {
     // pass mousePosition for rotating gun
     this.hero.setMousePosition(this.mousePos);
 
-    if (this.mouseListener.isButtonDown(MouseListener.BUTTON_LEFT)) {
+    if (actionRequest) {
       const enemyScore: number = this.hero.shoot(this.mousePos, this.enemies);
       this.score += enemyScore;
     }
@@ -146,6 +161,8 @@ export default class Arena extends Game {
   }
 
   public update(dt: number): boolean {
+    dt *= Settings.gameSpeed;
+
     // calculate new highscore
     if (this.score > this.highScore) {
       this.highScore = this.score;
@@ -164,6 +181,7 @@ export default class Arena extends Game {
       this.timeToNextEnemy = this.enemySpawnInterval;
     }
     this.hero.update(dt);
+
     // Loop through all the enemies and...
     this.enemies.forEach((enemy: Enemy, i: number) => {
       if (enemy.getHealth() <= 0) {
@@ -184,6 +202,12 @@ export default class Arena extends Game {
         enemy.collisionResponse(otherEnemy);
       });
     });
+
+    // increment difficulty
+    //Settings.difficulty = Math.max(Math.ceil(this.score), 1);
+    Settings.gameSpeed = Math.sqrt(this.score / 50) + 0.707;
+    //console.log(Settings.gameSpeed);
+
     return true;
   }
 

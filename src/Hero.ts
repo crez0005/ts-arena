@@ -1,6 +1,7 @@
 import CanvasRenderer from './CanvasRenderer.js';
 import Enemy from './Enemy.js';
 import Mover from './Mover.js';
+import Settings from './Settings.js';
 import Vector2 from './Vector2.js';
 import Weapon from './Weapon.js';
 
@@ -33,7 +34,7 @@ export default class Hero extends Mover {
     this.center();
 
     this.mousePos = new Vector2(0, 0);
-    this.weapon = new Weapon(this, 400 / this.settings.difficulty);
+    this.weapon = new Weapon(this, 400);
   }
 
   public changeWeaponDamage(damage: number): void {

@@ -5,6 +5,7 @@ import CanvasRenderer from './CanvasRenderer.js';
 import KeyListener from './KeyListener.js';
 import GameItem from './GameItem.js';
 import Hero from './Hero.js';
+import Settings from './Settings.js';
 
 export default class Weapon extends GameItem {
   private hero: Hero;
