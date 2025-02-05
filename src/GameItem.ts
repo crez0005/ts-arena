@@ -11,7 +11,7 @@ export default abstract class GameItem {
   public constructor() {
     this.image = new Image();
     this.pos = new Vector2(0, 0);
-    this.scale = new Vector2(1, 1);
+    this.scale = new Vector2(3, 3);
   }
 
   public getPos(): Vector2 {
@@ -44,6 +44,20 @@ export default abstract class GameItem {
       throw new Error(`${this.constructor.name}: Image not loaded`);
     }
     return new Vector2(this.image.width, this.image.height).multiply(this.scale);
+  }
+
+  /**
+ * @param canvas 
+ * @param stat stat to display, like health or damage
+ * @param color text color
+ */
+  protected displayStat(canvas: HTMLCanvasElement, stat: number, color: string = 'white'): void {
+    const p: Vector2 = this.getPosCentered();
+    // display health or damage
+    CanvasRenderer.writeText(canvas,
+      `${stat}`,
+      p.x, p.y + this.image.height - 5, 'center', 'monospace', 60, color
+    );
   }
 
   /**

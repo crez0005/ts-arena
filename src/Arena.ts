@@ -39,6 +39,8 @@ export default class Arena extends Game {
 
   private maxEnemies: number;
 
+  private mousePos: Vector2;
+
   public constructor(canvas: HTMLCanvasElement) {
     super();
     this.canvas = canvas;
@@ -50,6 +52,7 @@ export default class Arena extends Game {
 
     this.keyListener = new KeyListener;
     this.mouseListener = new MouseListener(canvas);
+    this.mousePos = new Vector2(0, 0);
     this.hero = new Hero(this.canvasBoundary);
     this.score = 0;
     this.highScore = 0;
@@ -119,6 +122,10 @@ export default class Arena extends Game {
     }
   }
 
+  private getMousePosition(): Vector2 {
+    return this.mousePos;
+  }
+
   /**
    * Process all input. Called from the GameLoop.
    */
@@ -129,12 +136,14 @@ export default class Arena extends Game {
       }
     }
 
-    const mousePos: Vector2 = this.mouseListener.getMousePosition();
+    this.mousePos = this.mouseListener.getMousePosition();
+    // pass mousePosition for rotating gun
+    this.hero.setMousePosition(this.mousePos);
     // always shoot
-    const enemyScore: number = this.hero.shoot(mousePos, this.enemies);
+    const enemyScore: number = this.hero.shoot(this.mousePos, this.enemies);
     this.score += enemyScore;
     //if (this.mouseListener.isButtonDown(MouseListener.BUTTON_LEFT)) {
-    //  this.hero.shoot(mousePos, this.enemies);
+    //  this.hero.shoot(this.mousePos, this.enemies);
     //}
 
     this.handleHeroMovement();

@@ -13,12 +13,14 @@ export default class Hero extends Mover {
 
   private movingRight: boolean;
 
+  private mousePos: Vector2;
+
   private weapon: Weapon;
 
   public constructor(boundary: Vector2) {
     super(boundary);
     this.boundary = boundary;
-    this.image = CanvasRenderer.loadNewImage('./assets/sprite_hero.png');
+    this.image = CanvasRenderer.loadNewImage('./assets/sprite_hero_faceless.png');
     this.scale = new Vector2(3, 3);
     this.speed = 0.3; // px per ms
     this.velocity = new Vector2(0, 0);
@@ -28,9 +30,10 @@ export default class Hero extends Mover {
     this.movingLeft = false;
     this.movingRight = false;
     
-    this.weapon = new Weapon(450 / this.settings.difficulty);
-    
     this.center();
+
+    this.mousePos = new Vector2(0, 0);
+    this.weapon = new Weapon(this, 450 / this.settings.difficulty);
   }
 
   private center(): void {
@@ -57,6 +60,14 @@ export default class Hero extends Mover {
 
   public shoot(mousePos: Vector2, targets: Enemy[]): number {
     return this.weapon.shoot(this.getPosCentered(), mousePos, targets);
+  }
+
+  public getMousePosition(): Vector2 {
+    return this.mousePos;
+  }
+
+  public setMousePosition(mousePos: Vector2): void {
+    this.mousePos = mousePos;
   }
 
   public update(dt: number): void {
@@ -94,5 +105,6 @@ export default class Hero extends Mover {
   public override render(canvas: HTMLCanvasElement): void {
     super.render(canvas);
     this.weapon.render(canvas);
+    this.displayStat(canvas, this.weapon.getDamage(), 'red');
   }
 }

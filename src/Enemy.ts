@@ -112,11 +112,6 @@ export default abstract class Enemy extends Mover {
 
   public override render(canvas: HTMLCanvasElement): void {
     super.render(canvas);
-    const p: Vector2 = this.getPosCentered();
-    // display health
-    CanvasRenderer.writeText(canvas,
-      `${this.health}`,
-      p.x, p.y + this.image.height - 5, 'center', 'monospace', 60, 'white'
-    );
+    this.displayStat(canvas, this.health, 'white');
   }
 }
