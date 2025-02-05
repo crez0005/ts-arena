@@ -20,7 +20,7 @@ export default class Hero extends Mover {
   public constructor(boundary: Vector2) {
     super(boundary);
     this.boundary = boundary;
-    this.image = CanvasRenderer.loadNewImage('./assets/sprite_hero_faceless.png');
+    this.image = CanvasRenderer.loadNewImage('./assets/sprite_hero_miniface.png');
     this.scale = new Vector2(3, 3);
     this.speed = 0.3; // px per ms
     this.velocity = new Vector2(0, 0);
@@ -105,6 +105,6 @@ export default class Hero extends Mover {
   public override render(canvas: HTMLCanvasElement): void {
     super.render(canvas);
     this.weapon.render(canvas);
-    this.displayStat(canvas, this.weapon.getDamage(), 'red');
+    this.displayStat(canvas, this.weapon.getDamage(), 'yellow');
   }
 }

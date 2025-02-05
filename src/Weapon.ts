@@ -38,7 +38,7 @@ export default class Weapon extends GameItem {
     this.raysFired = []; // Actual gameplay rays (invisible)
     this.visualRays = []; // Visual rays from weapon tip
     this.rotation = 0;
-    this.armLength = 20;
+    this.armLength = 40;
     this.weaponLength = 40;
   }
 
